@@ -6,7 +6,9 @@ addpath('C:\Users\jeffr\Dropbox (Sydney Uni)\projects\unsaturated\Roration drum 
 read_filedir='D:\EXP RoDrtest\Exp\for test\original_photos';
 save_filedir='D:\EXP RoDrtest\Exp\for test\sharpen_segmented_photos';
 figureinfo=dir([read_filedir '\*.jpg']);
+
 % %----------------- C0055_CR is the data: coordinates of rotation drum center (CC), radius of rotation drum (CR)
+% %-----------------how to locate CC and CR. 1)in PIV lab calibration, manualy select three bolt postion to locate CC and CR (Using triangle external circle theory); 2)export to .mat file
 CCR=load('C:\Users\jeffr\Dropbox (Sydney Uni)\projects\unsaturated\Roration drum experiment\Dataanalysis\C0055_CR.mat');
 CC=CCR.CC;
 CC(1,2)=(CC(1,2)-1080)*-1;
@@ -94,43 +96,43 @@ upsury=pixely_bound(boundtoCCdist<CR*0.99);
         hold on
         plot(fitdatamidx(angle_a==max(angle_a)),max(angle_a),'go','MarkerSize',10);
         ylabel('Angle(^o)');
-        %% ----------plot perpendicular line of the fitting line
-        currslope=tan(max(fitangle_a));
-        perpslope=-1/currslope;
-        perp_b=fitdatamidy(fitangle_a==max(fitangle_a))-(perpslope*fitdatamidx(fitangle_a==max(fitangle_a)));
-        figure(2); hold on;
-        yft_perp=perpslope*xft+perp_b;
-        plot(xft,yft_perp,'g-','LineWidth',1);
-        %% ----------plot intersection between perpendicular line and circle
-        figure(2);hold on;
-        [interx,intery] = linecirc(perpslope,perp_b,CC(1,1),CC(1,2),CR);
-        plot(interx(1),intery(1),'y*','MarkerSize',10,'LineWidth',1);
-        dist_OI=sqrt((coord_maxanglex-interx(1)).^2+(coord_maxangley-intery(1)).^2);
-        %% ----------plot parallel line of fitting line cross intersection-----
-        para_b=intery(1)-(currslope*interx(1));
-        figure(2); hold on;
-        yft_para=currslope*xft+para_b;
-        plot(xft,yft_para,'r--','LineWidth',1);
-        %% ----------plot rotated figure---------
-        % % the rotation is based on the max angle point
-        % % the rotation angle is the slope of the max slope
-        rotation_angle=(-max(fitangle_a)/pi*180);%minus is anticlockwise
-        BWrotate=rotateAround(BW, coord_maxangley*-1+1080, coord_maxanglex,rotation_angle);
-        figure(6);imshow(BWrotate);
-        hold on
-        plot(fitdatamidx(fitangle_a==max(fitangle_a)),(fitdatamidy(fitangle_a==max(fitangle_a))*-1)+1080,'go','MarkerSize',10,'LineWidth',1);
-        %% ---------plot sampling region---------
-        figure(6);hold on;
-        pix_one=6*5;%the assumed pixel for one particle
-        S1(1,1)=coord_maxanglex+pix_one;S1(1,2)=coord_maxangley;
-        S2(1,1)=coord_maxanglex-pix_one;S2(1,2)=coord_maxangley;
-        S3(1,1)=coord_maxanglex+pix_one;S3(1,2)=coord_maxangley-dist_OI;
-        S4(1,1)=coord_maxanglex-pix_one;S4(1,2)=coord_maxangley-dist_OI;
-        S_coord=[S1;S2;S4;S3];
-        plot(S_coord(:,1),S_coord(:,2)*-1+1080,'o','MarkerSize',10,'LineWidth',1,'MarkerFaceColor',[0.9290 0.6940 0.1250]);
-        plot(polyshape(S_coord(:,1),S_coord(:,2)*-1+1080));
-        %% obtain velocity field data from sampling region
-%         load('E:\EXP RoDrtest\Exp\for test');
+%         %% ----------plot perpendicular line of the fitting line
+%         currslope=tan(max(fitangle_a));
+%         perpslope=-1/currslope;
+%         perp_b=fitdatamidy(fitangle_a==max(fitangle_a))-(perpslope*fitdatamidx(fitangle_a==max(fitangle_a)));
+%         figure(2); hold on;
+%         yft_perp=perpslope*xft+perp_b;
+%         plot(xft,yft_perp,'g-','LineWidth',1);
+%         %% ----------plot intersection between perpendicular line and circle
+%         figure(2);hold on;
+%         [interx,intery] = linecirc(perpslope,perp_b,CC(1,1),CC(1,2),CR);
+%         plot(interx(1),intery(1),'y*','MarkerSize',10,'LineWidth',1);
+%         dist_OI=sqrt((coord_maxanglex-interx(1)).^2+(coord_maxangley-intery(1)).^2);
+%         %% ----------plot parallel line of fitting line cross intersection-----
+%         para_b=intery(1)-(currslope*interx(1));
+%         figure(2); hold on;
+%         yft_para=currslope*xft+para_b;
+%         plot(xft,yft_para,'r--','LineWidth',1);
+%         %% ----------plot rotated figure---------
+%         % % the rotation is based on the max angle point
+%         % % the rotation angle is the slope of the max slope
+%         rotation_angle=(-max(fitangle_a)/pi*180);%minus is anticlockwise
+%         BWrotate=rotateAround(BW, coord_maxangley*-1+1080, coord_maxanglex,rotation_angle);
+%         figure(6);imshow(BWrotate);
+%         hold on
+%         plot(fitdatamidx(fitangle_a==max(fitangle_a)),(fitdatamidy(fitangle_a==max(fitangle_a))*-1)+1080,'go','MarkerSize',10,'LineWidth',1);
+%         %% ---------plot sampling region---------
+%         figure(6);hold on;
+%         pix_one=6*5;%the assumed pixel for one particle
+%         S1(1,1)=coord_maxanglex+pix_one;S1(1,2)=coord_maxangley;
+%         S2(1,1)=coord_maxanglex-pix_one;S2(1,2)=coord_maxangley;
+%         S3(1,1)=coord_maxanglex+pix_one;S3(1,2)=coord_maxangley-dist_OI;
+%         S4(1,1)=coord_maxanglex-pix_one;S4(1,2)=coord_maxangley-dist_OI;
+%         S_coord=[S1;S2;S4;S3];
+%         plot(S_coord(:,1),S_coord(:,2)*-1+1080,'o','MarkerSize',10,'LineWidth',1,'MarkerFaceColor',[0.9290 0.6940 0.1250]);
+%         plot(polyshape(S_coord(:,1),S_coord(:,2)*-1+1080));
+%         %% obtain velocity field data from sampling region
+% %         load('E:\EXP RoDrtest\Exp\for test');
 
 %% sharpen image
 % % image = gpuArray(imread('E:\EXP RoDrtest\Exp\for test\C0055.MP4_20220225_094202.186.jpg'));
