@@ -6,10 +6,12 @@ addpath('C:\Users\jeffr\Dropbox (Sydney Uni)\projects\unsaturated\Roration drum 
 read_filedir='D:\EXP RoDrtest\Exp\for test\original_photos';
 save_filedir='D:\EXP RoDrtest\Exp\for test\sharpen_segmented_photos';
 figureinfo=dir([read_filedir '\*.jpg']);
+% %----------------- C0055_CR is the data: coordinates of rotation drum center (CC), radius of rotation drum (CR)
 CCR=load('C:\Users\jeffr\Dropbox (Sydney Uni)\projects\unsaturated\Roration drum experiment\Dataanalysis\C0055_CR.mat');
 CC=CCR.CC;
 CC(1,2)=(CC(1,2)-1080)*-1;
 CR=CCR.calied_pixelR;
+% &----------------- end explanation C0055_CR
 
 for figi=1
 %     :size(figureinfo,1)
